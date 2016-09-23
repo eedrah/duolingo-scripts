@@ -2,9 +2,9 @@
 // @name         Duolingo Back To Back Practice
 // @description  Starts another practice when one ends
 // @author       Eedrah
-// @namespace    https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.js
+// @namespace    https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.user.js
 // @match        https://www.duolingo.com/practice*
-// @downloadURL  https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.js
+// @downloadURL  https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.user.js
 // @version      1.0.0
 // ==/UserScript==
 
