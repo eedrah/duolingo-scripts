@@ -21,7 +21,15 @@ function findButtonOfInterest () {
   return buttonsOfInterest[0]
 }
 
+function hideProgressBar () {
+  var progressBar = document.querySelectorAll('#progress-bar')
+  if (progressBar) {
+    progressBar.style.display = 'none'
+  }
+}
+
 new MutationObserver(function (nodes) { // eslint-disable-line no-undef
+  hideProgressBar()
   findButtonOfInterest().click()
 }).observe(document.querySelector('body'), {
   childList: true
