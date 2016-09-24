@@ -3,9 +3,9 @@
 // @description  Starts another practice when one ends
 // @author       Eedrah
 // @namespace    https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.user.js
-// @match        https://www.duolingo.com/practice*
+// @match        https://www.duolingo.com/*
 // @downloadURL  https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.user.js
-// @version      1.1.1
+// @version      1.2.0
 // ==/UserScript==
 
 var textOfInterest = [
@@ -29,9 +29,11 @@ function hideProgressBar () {
 }
 
 new MutationObserver(function (nodes) { // eslint-disable-line no-undef
-  hideProgressBar()
-  var button = findButtonOfInterest()
-  button && button.click()
+  if (window.location.pathname === '/practice') {
+    hideProgressBar()
+    var button = findButtonOfInterest()
+    button && button.click()
+  }
 }).observe(document.querySelector('body'), {
   childList: true
 })
