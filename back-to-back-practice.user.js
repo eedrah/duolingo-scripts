@@ -30,7 +30,8 @@ function hideProgressBar () {
 
 new MutationObserver(function (nodes) { // eslint-disable-line no-undef
   hideProgressBar()
-  findButtonOfInterest().click()
+  var button = findButtonOfInterest()
+  button && button.click()
 }).observe(document.querySelector('body'), {
   childList: true
 })
