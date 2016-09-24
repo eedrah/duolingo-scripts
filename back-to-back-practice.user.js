@@ -5,7 +5,7 @@
 // @namespace    https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.user.js
 // @match        https://www.duolingo.com/practice*
 // @downloadURL  https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.user.js
-// @version      1.0.0
+// @version      1.1.0
 // ==/UserScript==
 
 var textOfInterest = [
