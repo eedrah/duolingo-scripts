@@ -5,7 +5,7 @@
 // @namespace    https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.user.js
 // @match        https://www.duolingo.com/practice*
 // @downloadURL  https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.user.js
-// @version      1.1.0
+// @version      1.1.1
 // ==/UserScript==
 
 var textOfInterest = [
@@ -22,7 +22,7 @@ function findButtonOfInterest () {
 }
 
 function hideProgressBar () {
-  var progressBar = document.querySelectorAll('#progress-bar')
+  var progressBar = document.querySelector('#progress-bar')
   if (progressBar) {
     progressBar.style.display = 'none'
   }
