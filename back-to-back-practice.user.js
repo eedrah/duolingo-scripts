@@ -28,8 +28,12 @@ function hideProgressBar () {
   }
 }
 
+function isGeneralPractice () {
+  return window.location.pathname === '/practice'
+}
+
 new MutationObserver(function (nodes) { // eslint-disable-line no-undef
-  if (window.location.pathname === '/practice') {
+  if (isGeneralPractice()) {
     hideProgressBar()
     var button = findButtonOfInterest()
     button && button.click()
