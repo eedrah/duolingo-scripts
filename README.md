@@ -1,9 +1,7 @@
 # Duolingo User Scripts
 
 ## [Back to back practice](https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.user.js)
-Enables 'continuous' general practice on Duolingo - as soon as one practice session ends another begins. The progress bar is also hidden to simulate continuity.
-
-To disable at the start of the practice (so you can enter timed practice) or the end (so you can review the lesson), hold `shift` when starting or finishing. Keep holding `shift` when reviewing the lesson. Letting go of shift and clicking a button will continue the back-to-back mode.
+Enables 'continuous' general practice on Duolingo - as soon as one practice session ends another begins. The progress bar is also hidden to simulate continuity. The setting can be disabled by toggling the option in the top-left corner while practicing.
 
 ### Installation
 This requires either Greasemonkey or Tampermonkey. Then [click here](https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.user.js).
