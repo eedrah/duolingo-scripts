@@ -1,5 +1,8 @@
 # Duolingo User Scripts
 
+### Disclaimer
+These scripts are unofficial and for personal use only. They are subject to change and can break at any time, particularly if Duolingo.com changes their application. Use at your own risk. If something with your Duolingo website is not working please disable these scripts before contacting Duolingo.com, as it is more likely it is not their fault.
+
 ## [Back to back practice](https://github.com/eedrah/duolingo-scripts/raw/master/back-to-back-practice.user.js)
 Enables 'continuous' general practice on Duolingo - as soon as one practice session ends another begins. The progress bar is also hidden to simulate continuity. The setting can be disabled by toggling the option in the top-left corner while practicing.
 
