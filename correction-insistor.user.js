@@ -23,7 +23,41 @@
       // check if correct against possible answers
         // enable continue button
 
+// For lols, three different ways of defining classes
+function newTranslateChallenge () {
+  function hello () {
+    console.log('translate')
+  }
+  return {
+    hello: hello
+  }
+}
+
+function ListenChallenge () {}
+ListenChallenge.prototype.hello = function () {
+  console.log('listen')
+}
+
+class JudgeChallenge {
+  hello () {
+    console.log('judge')
+  }
+}
+
+class Challenge {
+  static get (className) {
+    return className
+  }
+}
+
+function getChallengeTypeFixer () {
+  const session = document.querySelector('session-element-container')
+  Challenge.get(session.children[0].classList[0])
+}
+
 function fixIncorrectAnswer (possibleAnswers) {
+  const challengeFixer = getChallengeTypeFixer()
+  challengeFixer
 // document.querySelector('.challenge-cell #submitted-text').style.display = 'none'
 // document.querySelector('.challenge-cell textarea, .challenge-cell input')
 // a.style.display = null
