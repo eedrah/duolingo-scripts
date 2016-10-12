@@ -24,7 +24,10 @@
         // enable continue button
 
 function fixIncorrectAnswer (possibleAnswers) {
-
+// document.querySelector('.challenge-cell #submitted-text').style.display = 'none'
+// document.querySelector('.challenge-cell textarea, .challenge-cell input')
+// a.style.display = null
+// a.disabled = null
 }
 
 function findAnswers (gradeNode) {
