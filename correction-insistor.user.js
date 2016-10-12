@@ -28,7 +28,9 @@ function fixIncorrectAnswer (possibleAnswers) {
 }
 
 function findAnswers (gradeNode) {
-
+  const answerNodes = gradeNode.querySelector('span.lighter').querySelectorAll('bdi')
+  return Array.prototype.map.call(answerNodes, answerNode => answerNode.textContent
+  )
 }
 
 function gradeChanged (gradeNode) {
