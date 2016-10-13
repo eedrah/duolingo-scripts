@@ -56,6 +56,7 @@ function TranslateChallenge (node) {
     this._input = this._challengeNode.querySelector('.challenge-cell textarea')
     this._input.style.display = null
     this._input.disabled = false
+    this._input.focus()
   }
   this.monitorCorrectAnswer = function (possibleAnswers, continueButton) {
     this._input.addEventListener('input', function () {
