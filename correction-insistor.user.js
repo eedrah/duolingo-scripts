@@ -59,10 +59,27 @@ class JudgeChallenge {
 }
 Challenge.register('challenge-judge', JudgeChallenge)
 
+class ContinueButton {
+  constructor () {
+    this._button = document.querySelector('#next_button')
+  }
+  deactivate () {
+    this._button.disabled = true
+  }
+  reactivate () {
+    this._button.disabled = false
+  }
+}
+
 function fixIncorrectAnswer (possibleAnswers) {
   const session = document.querySelector('#session-element-container')
   const challenge = Challenge.get(session.children[0].classList[0])
-  challenge.hello()
+  if (challenge) {
+    const continueButton = new ContinueButton()
+    continueButton.deactivate()
+    challenge.reactivate()
+    challenge.monitorCorrectAnswer(continueButton)
+  }
 // document.querySelector('.challenge-cell #submitted-text').style.display = 'none'
 // document.querySelector('.challenge-cell textarea, .challenge-cell input')
 // a.style.display = null
