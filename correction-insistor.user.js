@@ -14,11 +14,17 @@
 
 /* globals MutationObserver */
 
-const Challenge = new class {
+const AnswerChecker = new class {
+  isEqual (possibleAnswers, answer) {
+    return possibleAnswers.indexOf(answer) > -1
+  }
+}
+
+const Challenges = new class {
   constructor () {
     this._types = {}
   }
-  get (session) {
+  getType (session) {
     const challengeNode = session.children[0]
     const className = challengeNode.classList[0]
     const ChallengeClass = this._types[className]
@@ -31,12 +37,14 @@ const Challenge = new class {
   }
 }
 
-class TranslateChallenge {
+class AbstractChallenge {
   constructor (node) {
     this._challengeNode = node
-    this._input
+    this._input = undefined
   }
+}
 
+class TranslateChallenge extends AbstractChallenge {
   _deactivate () {
     this._input.disabled = true
   }
@@ -46,29 +54,23 @@ class TranslateChallenge {
     this._input = this._challengeNode.querySelector('.challenge-cell textarea')
     this._input.style.display = null
     this._input.disabled = false
-    setTimeout(function () {
+    setTimeout(function () { // stop the spurious new line
       this._input.value = this._input.value.trim()
     }.bind(this))
     this._input.focus()
   }
   monitorCorrectAnswer (possibleAnswers, continueButton) {
     this._input.addEventListener('input', function () {
-      if (possibleAnswers.indexOf(this._input.value) > -1) {
+      if (AnswerChecker.isEqual(possibleAnswers, this._input.value)) {
         continueButton.reactivate()
         this._deactivate()
       }
     }.bind(this))
   }
 }
-Challenge.register('challenge-translate', TranslateChallenge)
+Challenges.register('challenge-translate', TranslateChallenge)
 
-class ListenChallenge {
-  constructor (node) {
-    this._challengeNode = node
-    this._input
-    this._monitor
-  }
-
+class ListenChallenge extends AbstractChallenge {
   _deactivate () {
     this._input.contentEditable = false
   }
@@ -78,11 +80,11 @@ class ListenChallenge {
     this._input.contentEditable = true
     this._input.focus()
     this._input.textContent = this._input.textContent.trim()
-    this._input.addEventListener('keydown', function (e) { e.stopPropagation() })
+    this._input.addEventListener('keydown', function (e) { e.stopPropagation() }) // fixes the backspace key
   }
   monitorCorrectAnswer (possibleAnswers, continueButton) {
     this._monitor = new MutationObserver(function () {
-      if (possibleAnswers.indexOf(this._input.textContent) > -1) {
+      if (AnswerChecker.isEqual(possibleAnswers, this._input.textContent)) {
         continueButton.reactivate()
         this._deactivate()
         this._monitor.disconnect()
@@ -96,7 +98,7 @@ class ListenChallenge {
     })
   }
 }
-Challenge.register('challenge-listen', ListenChallenge)
+Challenges.register('challenge-listen', ListenChallenge)
 // ////////////////////////////////////////
 
 class ContinueButton {
@@ -113,7 +115,7 @@ class ContinueButton {
 
 function fixIncorrectAnswer (possibleAnswers) {
   const session = document.querySelector('#session-element-container')
-  const challenge = Challenge.get(session)
+  const challenge = Challenges.getType(session)
   if (challenge) {
     const continueButton = new ContinueButton()
     continueButton.deactivate()
