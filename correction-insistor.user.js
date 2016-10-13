@@ -5,12 +5,8 @@
 // @namespace    https://github.com/eedrah/duolingo-scripts/raw/master/correction-insistor.user.js
 // @downloadURL  https://github.com/eedrah/duolingo-scripts/raw/master/correction-insistor.user.js
 // @match        https://www.duolingo.com/*
-// @grant        GM_getValue
-// @grant        GM_setValue
 // @version      0.0.1
 // ==/UserScript==
-
-// /* globals GM_getValue GM_setValue */
 
 /* globals MutationObserver */
 
@@ -121,7 +117,6 @@ class ListenChallenge extends AbstractChallenge {
   }
 }
 Challenges.register('challenge-listen', ListenChallenge)
-// ////////////////////////////////////////
 
 class ContinueButton {
   constructor () {
