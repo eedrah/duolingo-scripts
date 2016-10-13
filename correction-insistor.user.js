@@ -11,8 +11,9 @@
 // ==/UserScript==
 
 // /* globals GM_getValue GM_setValue */
-
 /* eslint-disable no-multiple-empty-lines */
+
+/* globals MutationObserver */
 
 // on mutation
   // check if there is a badge-wrong grade
@@ -45,15 +46,36 @@ const Challenge = new class {
 function TranslateChallenge (node) {
   this._challengeNode = node
   this._input
+  this._monitor
+  this._deactivate = function () {
+    this._input.disabled = true
+  }
 
   this.reactivate = function () {
     this._challengeNode.querySelector('.challenge-cell #submitted-text').style.display = 'none'
     this._input = this._challengeNode.querySelector('.challenge-cell textarea')
     this._input.style.display = null
-    this._input.disabled = null
+    this._input.disabled = false
   }
   this.monitorCorrectAnswer = function (possibleAnswers, continueButton) {
-    setTimeout(() => continueButton.reactivate(), 3000)
+    this._input.addEventListener('input', function () {
+      if (possibleAnswers.indexOf(this._input.value) > -1) {
+        continueButton.reactivate()
+        this._deactivate()
+      }
+    }.bind(this))
+    // this._monitor = new MutationObserver(function () {
+    //   debugger
+    //   if (this._input.textContent === possibleAnswers[0]) {
+    //     continueButton.reactivate()
+    //     this._deactivate()
+    //   }
+    // }).observe(this._input, {
+    //   attributes: true,
+    //   characterData: true,
+    //   childList: true,
+    //   subtree: true
+    // })
   }
 }
 Challenge.register('challenge-translate', TranslateChallenge)
@@ -110,7 +132,7 @@ function gradeChanged (gradeNode) {
   }
 }
 
-new MutationObserver(function (nodes) { // eslint-disable-line no-undef
+new MutationObserver(function (nodes) {
   const gradeNode = document.querySelector('#grade')
   if (!gradeNode) {
     return
