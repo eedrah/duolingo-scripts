@@ -102,13 +102,6 @@ ListenChallenge.prototype.monitorCorrectAnswer = function (possibleAnswers, cont
   })
 }
 Challenge.register('challenge-listen', ListenChallenge)
-
-class JudgeChallenge {
-  reactivate () {
-    console.log('judge')
-  }
-}
-Challenge.register('challenge-judge', JudgeChallenge)
 // ////////////////////////////////////////
 
 class ContinueButton {
