@@ -11,18 +11,8 @@
 // ==/UserScript==
 
 // /* globals GM_getValue GM_setValue */
-/* eslint-disable no-multiple-empty-lines */
 
 /* globals MutationObserver */
-
-// on mutation
-  // check if there is a badge-wrong grade
-    // get correct answers
-    // disable continue button
-    // enable entry fields again
-    // on change of fields
-      // check if correct against possible answers
-        // enable continue button
 
 const Challenge = new class {
   constructor () {
