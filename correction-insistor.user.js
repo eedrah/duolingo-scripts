@@ -55,6 +55,9 @@ function TranslateChallenge (node) {
     this._input = this._challengeNode.querySelector('.challenge-cell textarea')
     this._input.style.display = null
     this._input.disabled = false
+    setTimeout(function () {
+      this._input.value = this._input.value.trim()
+    }.bind(this))
     this._input.focus()
   }
   this.monitorCorrectAnswer = function (possibleAnswers, continueButton) {
@@ -80,6 +83,7 @@ ListenChallenge.prototype.reactivate = function () {
   this._input = this._challengeNode.querySelector('#graded-word-input')
   this._input.contentEditable = true
   this._input.focus()
+  this._input.textContent = this._input.textContent.trim()
   this._input.addEventListener('keydown', function (e) { e.stopPropagation() })
 }
 ListenChallenge.prototype.monitorCorrectAnswer = function (possibleAnswers, continueButton) {
