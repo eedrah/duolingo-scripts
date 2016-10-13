@@ -80,6 +80,7 @@ ListenChallenge.prototype.reactivate = function () {
   this._input = this._challengeNode.querySelector('#graded-word-input')
   this._input.contentEditable = true
   this._input.focus()
+  this._input.addEventListener('keydown', function (e) { e.stopPropagation() })
 }
 ListenChallenge.prototype.monitorCorrectAnswer = function (possibleAnswers, continueButton) {
   this._monitor = new MutationObserver(function () {
