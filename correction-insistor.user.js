@@ -27,37 +27,50 @@ const Challenge = new class {
   constructor () {
     this._types = {}
   }
-  get (className) {
-    return new this._types[className]()
+  get (session) {
+    const challengeNode = session.children[0]
+    const className = challengeNode.classList[0]
+    const ChallengeClass = this._types[className]
+    if (ChallengeClass) {
+      return new ChallengeClass(challengeNode)
+    }
   }
   register (name, type) {
     this._types[name] = type
   }
 }
 
+// ////////////////////////////////////////
 // For lols, three different ways of defining classes
-function TranslateChallenge () {
-  function hello () {
-    console.log('translate')
+function TranslateChallenge (node) {
+  this._challengeNode = node
+  this._input
+
+  this.reactivate = function () {
+    this._challengeNode.querySelector('.challenge-cell #submitted-text').style.display = 'none'
+    this._input = this._challengeNode.querySelector('.challenge-cell textarea')
+    this._input.style.display = null
+    this._input.disabled = null
   }
-  return {
-    hello: hello
+  this.monitorCorrectAnswer = function (possibleAnswers, continueButton) {
+    setTimeout(() => continueButton.reactivate(), 3000)
   }
 }
 Challenge.register('challenge-translate', TranslateChallenge)
 
 function ListenChallenge () {}
-ListenChallenge.prototype.hello = function () {
+ListenChallenge.prototype.reactivate = function () {
   console.log('listen')
 }
 Challenge.register('challenge-listen', ListenChallenge)
 
 class JudgeChallenge {
-  hello () {
+  reactivate () {
     console.log('judge')
   }
 }
 Challenge.register('challenge-judge', JudgeChallenge)
+// ////////////////////////////////////////
 
 class ContinueButton {
   constructor () {
@@ -73,17 +86,13 @@ class ContinueButton {
 
 function fixIncorrectAnswer (possibleAnswers) {
   const session = document.querySelector('#session-element-container')
-  const challenge = Challenge.get(session.children[0].classList[0])
+  const challenge = Challenge.get(session)
   if (challenge) {
     const continueButton = new ContinueButton()
     continueButton.deactivate()
     challenge.reactivate()
-    challenge.monitorCorrectAnswer(continueButton)
+    challenge.monitorCorrectAnswer(possibleAnswers, continueButton)
   }
-// document.querySelector('.challenge-cell #submitted-text').style.display = 'none'
-// document.querySelector('.challenge-cell textarea, .challenge-cell input')
-// a.style.display = null
-// a.disabled = null
 }
 
 function findAnswers (gradeNode) {
