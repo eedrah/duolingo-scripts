@@ -23,8 +23,20 @@
       // check if correct against possible answers
         // enable continue button
 
+const Challenge = new class {
+  constructor () {
+    this._types = {}
+  }
+  get (className) {
+    return new this._types[className]()
+  }
+  register (name, type) {
+    this._types[name] = type
+  }
+}
+
 // For lols, three different ways of defining classes
-function newTranslateChallenge () {
+function TranslateChallenge () {
   function hello () {
     console.log('translate')
   }
@@ -32,32 +44,25 @@ function newTranslateChallenge () {
     hello: hello
   }
 }
+Challenge.register('challenge-translate', TranslateChallenge)
 
 function ListenChallenge () {}
 ListenChallenge.prototype.hello = function () {
   console.log('listen')
 }
+Challenge.register('challenge-listen', ListenChallenge)
 
 class JudgeChallenge {
   hello () {
     console.log('judge')
   }
 }
-
-class Challenge {
-  static get (className) {
-    return className
-  }
-}
-
-function getChallengeTypeFixer () {
-  const session = document.querySelector('session-element-container')
-  Challenge.get(session.children[0].classList[0])
-}
+Challenge.register('challenge-judge', JudgeChallenge)
 
 function fixIncorrectAnswer (possibleAnswers) {
-  const challengeFixer = getChallengeTypeFixer()
-  challengeFixer
+  const session = document.querySelector('#session-element-container')
+  const challenge = Challenge.get(session.children[0].classList[0])
+  challenge.hello()
 // document.querySelector('.challenge-cell #submitted-text').style.display = 'none'
 // document.querySelector('.challenge-cell textarea, .challenge-cell input')
 // a.style.display = null
