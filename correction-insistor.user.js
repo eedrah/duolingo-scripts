@@ -31,16 +31,17 @@ const Challenge = new class {
   }
 }
 
-// ////////////////////////////////////////
-// For lols, three different ways of defining classes
-function TranslateChallenge (node) {
-  this._challengeNode = node
-  this._input
-  this._deactivate = function () {
+class TranslateChallenge {
+  constructor (node) {
+    this._challengeNode = node
+    this._input
+  }
+
+  _deactivate () {
     this._input.disabled = true
   }
 
-  this.reactivate = function () {
+  reactivate () {
     this._challengeNode.querySelector('.challenge-cell #submitted-text').style.display = 'none'
     this._input = this._challengeNode.querySelector('.challenge-cell textarea')
     this._input.style.display = null
@@ -50,7 +51,7 @@ function TranslateChallenge (node) {
     }.bind(this))
     this._input.focus()
   }
-  this.monitorCorrectAnswer = function (possibleAnswers, continueButton) {
+  monitorCorrectAnswer (possibleAnswers, continueButton) {
     this._input.addEventListener('input', function () {
       if (possibleAnswers.indexOf(this._input.value) > -1) {
         continueButton.reactivate()
@@ -61,35 +62,39 @@ function TranslateChallenge (node) {
 }
 Challenge.register('challenge-translate', TranslateChallenge)
 
-function ListenChallenge (node) {
-  this._challengeNode = node
-  this._input
-  this._monitor
-}
-ListenChallenge.prototype._deactivate = function () {
-  this._input.contentEditable = false
-}
-ListenChallenge.prototype.reactivate = function () {
-  this._input = this._challengeNode.querySelector('#graded-word-input')
-  this._input.contentEditable = true
-  this._input.focus()
-  this._input.textContent = this._input.textContent.trim()
-  this._input.addEventListener('keydown', function (e) { e.stopPropagation() })
-}
-ListenChallenge.prototype.monitorCorrectAnswer = function (possibleAnswers, continueButton) {
-  this._monitor = new MutationObserver(function () {
-    if (possibleAnswers.indexOf(this._input.textContent) > -1) {
-      continueButton.reactivate()
-      this._deactivate()
-      this._monitor.disconnect()
-    }
-  }.bind(this))
-  this._monitor.observe(this._input, {
-    attributes: true,
-    characterData: true,
-    childList: true,
-    subtree: true
-  })
+class ListenChallenge {
+  constructor (node) {
+    this._challengeNode = node
+    this._input
+    this._monitor
+  }
+
+  _deactivate () {
+    this._input.contentEditable = false
+  }
+
+  reactivate () {
+    this._input = this._challengeNode.querySelector('#graded-word-input')
+    this._input.contentEditable = true
+    this._input.focus()
+    this._input.textContent = this._input.textContent.trim()
+    this._input.addEventListener('keydown', function (e) { e.stopPropagation() })
+  }
+  monitorCorrectAnswer (possibleAnswers, continueButton) {
+    this._monitor = new MutationObserver(function () {
+      if (possibleAnswers.indexOf(this._input.textContent) > -1) {
+        continueButton.reactivate()
+        this._deactivate()
+        this._monitor.disconnect()
+      }
+    }.bind(this))
+    this._monitor.observe(this._input, {
+      attributes: true,
+      characterData: true,
+      childList: true,
+      subtree: true
+    })
+  }
 }
 Challenge.register('challenge-listen', ListenChallenge)
 // ////////////////////////////////////////
