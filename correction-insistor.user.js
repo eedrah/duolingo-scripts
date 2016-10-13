@@ -46,7 +46,6 @@ const Challenge = new class {
 function TranslateChallenge (node) {
   this._challengeNode = node
   this._input
-  this._monitor
   this._deactivate = function () {
     this._input.disabled = true
   }
@@ -65,25 +64,37 @@ function TranslateChallenge (node) {
         this._deactivate()
       }
     }.bind(this))
-    // this._monitor = new MutationObserver(function () {
-    //   debugger
-    //   if (this._input.textContent === possibleAnswers[0]) {
-    //     continueButton.reactivate()
-    //     this._deactivate()
-    //   }
-    // }).observe(this._input, {
-    //   attributes: true,
-    //   characterData: true,
-    //   childList: true,
-    //   subtree: true
-    // })
   }
 }
 Challenge.register('challenge-translate', TranslateChallenge)
 
-function ListenChallenge () {}
+function ListenChallenge (node) {
+  this._challengeNode = node
+  this._input
+  this._monitor
+}
+ListenChallenge.prototype._deactivate = function () {
+  this._input.contentEditable = false
+}
 ListenChallenge.prototype.reactivate = function () {
-  console.log('listen')
+  this._input = this._challengeNode.querySelector('#graded-word-input')
+  this._input.contentEditable = true
+  this._input.focus()
+}
+ListenChallenge.prototype.monitorCorrectAnswer = function (possibleAnswers, continueButton) {
+  this._monitor = new MutationObserver(function () {
+    if (possibleAnswers.indexOf(this._input.textContent) > -1) {
+      continueButton.reactivate()
+      this._deactivate()
+      this._monitor.disconnect()
+    }
+  }.bind(this))
+  this._monitor.observe(this._input, {
+    attributes: true,
+    characterData: true,
+    childList: true,
+    subtree: true
+  })
 }
 Challenge.register('challenge-listen', ListenChallenge)
 
