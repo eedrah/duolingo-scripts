@@ -11,3 +11,6 @@ This requires either Greasemonkey or Tampermonkey. Then [click here](https://git
 
 ### Known issues
 When I created this I made it on an English interface, and after I had already bought timed practice. If either of these is not the case for you it may require minor tweaking to the code. I'm happy to accept a pull request or liase with you to upgrade this script.
+
+## [Duolingo correction insistor](https://github.com/eedrah/duolingo-scripts/raw/master/correction-insistor.user.js)
+Insists on correct answers before progressing. Currently in alpha release.
