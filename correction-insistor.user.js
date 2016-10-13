@@ -14,9 +14,31 @@
 
 /* globals MutationObserver */
 
+const IGNORE_WHITESPACE = true
+const IGNORE_CASE = true
+const IGNORE_PUNCTUATION = true
+const IGNORE_ACCENTS = true
+
 const AnswerChecker = new class {
-  isEqual (possibleAnswers, answer) {
-    return possibleAnswers.indexOf(answer) > -1
+  _distil (phrase) {
+    const transforms = []
+    IGNORE_PUNCTUATION && transforms.push(s => s.replace(/[-.,'"?¿!¡:;_$%&]/g, ''))
+    IGNORE_CASE && transforms.push(s => s.toLocaleLowerCase())
+    IGNORE_ACCENTS && (
+      transforms.push(s => s.replace(/á/g, 'a')) &&
+      transforms.push(s => s.replace(/é/g, 'e')) &&
+      transforms.push(s => s.replace(/í/g, 'i')) &&
+      transforms.push(s => s.replace(/ó/g, 'o')) &&
+      transforms.push(s => s.replace(/ú/g, 'u')) &&
+      transforms.push(s => s.replace(/ñ/g, 'n')) &&
+      transforms.push(s => s.replace(/ç/g, 'c'))
+    )
+    IGNORE_WHITESPACE && transforms.push(s => s.replace(/\s+/, ' ').trim())
+
+    return transforms.reduce((str, fn) => fn(str), phrase)
+  }
+  check (possibleAnswers, answer) {
+    return possibleAnswers.map(this._distil).indexOf(this._distil(answer)) > -1
   }
 }
 
@@ -61,7 +83,7 @@ class TranslateChallenge extends AbstractChallenge {
   }
   monitorCorrectAnswer (possibleAnswers, continueButton) {
     this._input.addEventListener('input', function () {
-      if (AnswerChecker.isEqual(possibleAnswers, this._input.value)) {
+      if (AnswerChecker.check(possibleAnswers, this._input.value)) {
         continueButton.reactivate()
         this._deactivate()
       }
@@ -84,7 +106,7 @@ class ListenChallenge extends AbstractChallenge {
   }
   monitorCorrectAnswer (possibleAnswers, continueButton) {
     this._monitor = new MutationObserver(function () {
-      if (AnswerChecker.isEqual(possibleAnswers, this._input.textContent)) {
+      if (AnswerChecker.check(possibleAnswers, this._input.textContent)) {
         continueButton.reactivate()
         this._deactivate()
         this._monitor.disconnect()
