@@ -7,10 +7,10 @@
 // @match        https://www.duolingo.com/*
 // @grant        GM_getValue
 // @grant        GM_setValue
-// @version      2.0.0
+// @version      2.0.1
 // ==/UserScript==
 
-/* globals GM_getValue GM_setValue */
+/* globals GM_getValue GM_setValue MutationObserver */
 
 var ContinuousPractice = {
   get: function () {
@@ -51,7 +51,13 @@ function displaySettings () {
     return
   }
 
+  var previousSettingsElement = document.querySelector('#back-to-back-practice-settings')
+  if (previousSettingsElement) {
+    return
+  }
+
   var settingsElement = document.createElement('li')
+  settingsElement.id = 'back-to-back-practice-settings'
   var p = document.createElement('p')
   p.classList.add('player-quit')
   p.classList.add('gray')
@@ -95,10 +101,19 @@ function updateGui () {
   }
 }
 
-new MutationObserver(function (nodes) { // eslint-disable-line no-undef
-  if (isGeneralPractice()) {
-    updateGui()
-    ifNotBlockedByUserExecute(runContinuousPractice)
+new MutationObserver(function (records) {
+  const addedNodes = Array.prototype.concat.apply([], records.map(r => Array.from(r.addedNodes)))
+  const appNode = addedNodes.find(n => n.id === 'app')
+  if (appNode) {
+    new MutationObserver(function () {
+      if (isGeneralPractice()) {
+        updateGui()
+        ifNotBlockedByUserExecute(runContinuousPractice)
+      }
+    }).observe(appNode, {
+      childList: true,
+      subtree: true
+    })
   }
 }).observe(document.querySelector('body'), {
   childList: true
