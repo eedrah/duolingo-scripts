@@ -5,7 +5,7 @@
 // @namespace    https://github.com/eedrah/duolingo-scripts/raw/master/correction-insistor.user.js
 // @downloadURL  https://github.com/eedrah/duolingo-scripts/raw/master/correction-insistor.user.js
 // @match        https://www.duolingo.com/*
-// @version      0.0.1
+// @version      0.0.2
 // ==/UserScript==
 
 /* globals MutationObserver */
@@ -29,7 +29,7 @@ const AnswerChecker = new class {
       transforms.push(s => s.replace(/ñ/g, 'n')) &&
       transforms.push(s => s.replace(/ç/g, 'c'))
     )
-    IGNORE_WHITESPACE && transforms.push(s => s.replace(/\s+/, ' ').trim())
+    IGNORE_WHITESPACE && transforms.push(s => s.replace(/\s+/g, ' ').trim())
 
     return transforms.reduce((str, fn) => fn(str), phrase)
   }
