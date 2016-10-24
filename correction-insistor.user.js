@@ -27,6 +27,7 @@ const AnswerChecker = new class {
       transforms.push(s => s.replace(/ó/g, 'o')) &&
       transforms.push(s => s.replace(/ú/g, 'u')) &&
       transforms.push(s => s.replace(/ñ/g, 'n')) &&
+      transforms.push(s => s.replace(/ü/g, 'u')) &&
       transforms.push(s => s.replace(/ç/g, 'c'))
     )
     IGNORE_WHITESPACE && transforms.push(s => s.replace(/\s+/g, ' ').trim())
