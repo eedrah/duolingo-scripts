@@ -5,7 +5,7 @@
 // @namespace    https://github.com/eedrah/duolingo-scripts/raw/master/correction-insistor.user.js
 // @downloadURL  https://github.com/eedrah/duolingo-scripts/raw/master/correction-insistor.user.js
 // @match        https://www.duolingo.com/*
-// @version      0.0.2
+// @version      1.0.0
 // ==/UserScript==
 
 /* globals MutationObserver */
