@@ -7,7 +7,7 @@
 // @match        https://www.duolingo.com/*
 // @grant        GM_getValue
 // @grant        GM_setValue
-// @version      2.0.1
+// @version      2.0.2
 // ==/UserScript==
 
 /* globals GM_getValue GM_setValue MutationObserver */
