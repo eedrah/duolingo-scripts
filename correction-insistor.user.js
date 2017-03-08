@@ -1,7 +1,8 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name         Duolingo Correction Insistor
 // @description  Insists on correct answers before progressing
 // @author       Eedrah
+// @grant        none
 // @namespace    https://github.com/eedrah/duolingo-scripts/raw/master/correction-insistor.user.js
 // @downloadURL  https://github.com/eedrah/duolingo-scripts/raw/master/correction-insistor.user.js
 // @match        https://www.duolingo.com/*
@@ -10,10 +11,13 @@
 
 /* globals MutationObserver */
 
-const IGNORE_WHITESPACE = true
-const IGNORE_CASE = true
-const IGNORE_PUNCTUATION = true
-const IGNORE_ACCENTS = true
+// Configuration constants
+// Change them to change the script behavior.
+const IGNORE_WHITESPACE = true;
+const IGNORE_CASE = true;
+const IGNORE_PUNCTUATION = true;
+const IGNORE_ACCENTS = true;  // Ignore Spanish accents and diacritics.
+const DISABLE_IN_TIMED_PRACTICE = true;  // Don't insist in timed practice
 
 const AnswerChecker = new class {
   _distil (phrase) {
@@ -150,7 +154,9 @@ function findAnswers (gradeNode) {
 
 function gradeChanged (gradeNode) {
   if (gradeNode.children.length > 0) {
-    if (gradeNode.children[0].classList.contains('badge-wrong-big')) {
+    isTimedSession = document.getElementById("timer") && DISABLE_IN_TIMED_PRACTICE;
+    userMistake = gradeNode.children[0].classList.contains('badge-wrong-big');
+    if (userMistake && !isTimedSession) {
       const possibleAnswers = findAnswers(gradeNode)
       fixIncorrectAnswer(possibleAnswers)
     }
